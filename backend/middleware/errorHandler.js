@@ -1,15 +1,15 @@
 // backend/middleware/errorHandler.js
 // Middleware de tratamento de erros seguindo Clean Code (< 80 linhas)
 
-import { logError } from './logger.js';
+import { logError } from './logger.js'
 
 /**
  * Middleware central de tratamento de erros
  * Single Responsibility: Apenas tratar erros de forma padronizada
  */
-export const errorHandler = (error, req, res, next) => {
+export const errorHandler = (error, req, res, _next) => {
   // Log do erro completo para debug
-  logError(`Error in ${req.method} ${req.originalUrl}`, error);
+  logError(`Error in ${req.method} ${req.originalUrl}`, error)
 
   // Erros de validação (400)
   if (error.name === 'ValidationError') {
@@ -18,7 +18,7 @@ export const errorHandler = (error, req, res, next) => {
       message: error.message,
       details: error.details || [],
       timestamp: new Date().toISOString()
-    });
+    })
   }
 
   // Erros de conflito (409) - slug duplicado
@@ -27,7 +27,7 @@ export const errorHandler = (error, req, res, next) => {
       error: 'Conflict',
       message: error.message,
       timestamp: new Date().toISOString()
-    });
+    })
   }
 
   // Erros de não encontrado (404)
@@ -36,7 +36,16 @@ export const errorHandler = (error, req, res, next) => {
       error: 'Not Found',
       message: error.message,
       timestamp: new Date().toISOString()
-    });
+    })
+  }
+
+  // Erros de cota excedida (429)
+  if (error.name === 'QuotaExceededError') {
+    return res.status(429).json({
+      error: 'Too Many Requests',
+      message: error.message,
+      timestamp: new Date().toISOString()
+    })
   }
 
   // Erros de sistema de arquivos (500)
@@ -45,7 +54,7 @@ export const errorHandler = (error, req, res, next) => {
       error: 'Internal Server Error',
       message: 'Storage system error',
       timestamp: new Date().toISOString()
-    });
+    })
   }
 
   // Erros de JSON parse (400)
@@ -54,7 +63,7 @@ export const errorHandler = (error, req, res, next) => {
       error: 'Bad Request',
       message: 'Invalid JSON format',
       timestamp: new Date().toISOString()
-    });
+    })
   }
 
   // Erro genérico (500)
@@ -64,17 +73,17 @@ export const errorHandler = (error, req, res, next) => {
       ? error.message 
       : 'Something went wrong',
     timestamp: new Date().toISOString()
-  });
-};
+  })
+}
 
 /**
  * Classe de erro personalizada para validações
  */
 export class ValidationError extends Error {
   constructor(message, details = []) {
-    super(message);
-    this.name = 'ValidationError';
-    this.details = details;
+    super(message)
+    this.name = 'ValidationError'
+    this.details = details
   }
 }
 
@@ -83,8 +92,8 @@ export class ValidationError extends Error {
  */
 export class ConflictError extends Error {
   constructor(message) {
-    super(message);
-    this.name = 'ConflictError';
+    super(message)
+    this.name = 'ConflictError'
   }
 }
 
@@ -93,7 +102,17 @@ export class ConflictError extends Error {
  */
 export class NotFoundError extends Error {
   constructor(message) {
-    super(message);
-    this.name = 'NotFoundError';
+    super(message)
+    this.name = 'NotFoundError'
+  }
+}
+
+/**
+ * Classe de erro personalizada para cota excedida
+ */
+export class QuotaExceededError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'QuotaExceededError'
   }
 }

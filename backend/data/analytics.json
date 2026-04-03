@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": 1,
+    "link_id": 1,
+    "slug": "ink",
+    "timestamp": "2026-04-03T16:55:13.570Z",
+    "referer": "direct",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "ip": "::",
+    "is_bot": false,
+    "bot_info": null,
+    "country": "BR",
+    "city": null,
+    "device": "desktop",
+    "browser": "edge",
+    "os": "windows"
+  },
+  {
+    "id": 2,
+    "link_id": 2,
+    "slug": "goo",
+    "timestamp": "2026-04-03T16:57:12.906Z",
+    "referer": "direct",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0",
+    "ip": "::",
+    "is_bot": false,
+    "bot_info": null,
+    "country": "BR",
+    "city": null,
+    "device": "desktop",
+    "browser": "edge",
+    "os": "windows"
+  }
+]

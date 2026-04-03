@@ -1,8 +1,8 @@
 // services/WhatsAppService.js
 // Serviço de alto nível para WhatsApp seguindo SOLID principles
 
-import { LinkGeneratorInterface } from '../interfaces/LinkGeneratorInterface.js';
-import { StorageInterface } from '../interfaces/StorageInterface.js';
+import { LinkGeneratorInterface } from '../interfaces/LinkGeneratorInterface.js'
+import { StorageInterface } from '../interfaces/StorageInterface.js'
 
 /**
  * Serviço de alto nível que gerencia operações WhatsApp
@@ -16,17 +16,17 @@ export class WhatsAppService {
   constructor(linkGenerator, storage) {
     // Validação de dependências (Liskov Substitution)
     if (!(linkGenerator instanceof LinkGeneratorInterface)) {
-      throw new Error('linkGenerator must implement LinkGeneratorInterface');
+      throw new Error('linkGenerator must implement LinkGeneratorInterface')
     }
     
     if (!(storage instanceof StorageInterface)) {
-      throw new Error('storage must implement StorageInterface');
+      throw new Error('storage must implement StorageInterface')
     }
     
-    this.linkGenerator = linkGenerator;
-    this.storage = storage;
-    this.historyKey = 'inkpage_whatsapp_history';
-    this.lastUsedKey = 'inkpage_whatsapp_last_used';
+    this.linkGenerator = linkGenerator
+    this.storage = storage
+    this.historyKey = 'inkpage_whatsapp_history'
+    this.lastUsedKey = 'inkpage_whatsapp_last_used'
   }
   
   /**
@@ -37,7 +37,7 @@ export class WhatsAppService {
   async generateAndSave(params) {
     try {
       // Gera link usando serviço injetado
-      const link = this.linkGenerator.generate(params);
+      const link = this.linkGenerator.generate(params)
       
       // Salva no histórico usando serviço injetado
       const historyItem = {
@@ -47,20 +47,20 @@ export class WhatsAppService {
         message: params.message || '',
         createdAt: new Date().toISOString(),
         type: 'whatsapp'
-      };
+      }
       
-      const saved = await this.saveToHistory(historyItem);
+      const saved = await this.saveToHistory(historyItem)
       
       // Atualiza último usado
-      await this.updateLastUsed(params.phone, params.message || '');
+      await this.updateLastUsed(params.phone, params.message || '')
       
       return {
         link,
         saved,
         historyItem
-      };
+      }
     } catch (error) {
-      throw new Error(`Failed to generate WhatsApp link: ${error.message}`);
+      throw new Error(`Failed to generate WhatsApp link: ${error.message}`, { cause: error })
     }
   }
   
@@ -71,16 +71,16 @@ export class WhatsAppService {
    */
   async saveToHistory(historyItem) {
     try {
-      const history = await this.getHistory();
-      const updatedHistory = [...history, historyItem];
+      const history = await this.getHistory()
+      const updatedHistory = [...history, historyItem]
       
       // Manter apenas últimos 50 itens
-      const limitedHistory = updatedHistory.slice(-50);
+      const limitedHistory = updatedHistory.slice(-50)
       
-      return await this.storage.save(this.historyKey, limitedHistory);
+      return await this.storage.save(this.historyKey, limitedHistory)
     } catch (error) {
-      console.error('Error saving to history:', error);
-      return false;
+      console.error('Error saving to history:', error)
+      return false
     }
   }
   
@@ -90,11 +90,11 @@ export class WhatsAppService {
    */
   async getHistory() {
     try {
-      const history = await this.storage.get(this.historyKey, []);
-      return Array.isArray(history) ? history : [];
+      const history = await this.storage.get(this.historyKey, [])
+      return Array.isArray(history) ? history : []
     } catch (error) {
-      console.error('Error getting history:', error);
-      return [];
+      console.error('Error getting history:', error)
+      return []
     }
   }
   
@@ -104,8 +104,8 @@ export class WhatsAppService {
    * @returns {Promise<Array>} - Últimos links
    */
   async getRecentLinks(limit = 5) {
-    const history = await this.getHistory();
-    return history.slice(-limit).reverse();
+    const history = await this.getHistory()
+    return history.slice(-limit).reverse()
   }
   
   /**
@@ -115,8 +115,8 @@ export class WhatsAppService {
    * @returns {Promise<boolean>} - Sucesso ou falha
    */
   async updateLastUsed(phone, message) {
-    const lastUsed = { phone, message };
-    return await this.storage.save(this.lastUsedKey, lastUsed);
+    const lastUsed = { phone, message }
+    return await this.storage.save(this.lastUsedKey, lastUsed)
   }
   
   /**
@@ -124,7 +124,7 @@ export class WhatsAppService {
    * @returns {Promise<Object>} - { phone: string, message: string }
    */
   async getLastUsed() {
-    return await this.storage.get(this.lastUsedKey, { phone: '', message: '' });
+    return await this.storage.get(this.lastUsedKey, { phone: '', message: '' })
   }
   
   /**
@@ -132,7 +132,7 @@ export class WhatsAppService {
    * @returns {Promise<boolean>} - Sucesso ou falha
    */
   async clearHistory() {
-    return await this.storage.save(this.historyKey, []);
+    return await this.storage.save(this.historyKey, [])
   }
   
   /**
@@ -142,12 +142,12 @@ export class WhatsAppService {
    */
   async removeFromHistory(itemId) {
     try {
-      const history = await this.getHistory();
-      const updatedHistory = history.filter(item => item.id !== itemId);
-      return await this.storage.save(this.historyKey, updatedHistory);
+      const history = await this.getHistory()
+      const updatedHistory = history.filter(item => item.id !== itemId)
+      return await this.storage.save(this.historyKey, updatedHistory)
     } catch (error) {
-      console.error('Error removing from history:', error);
-      return false;
+      console.error('Error removing from history:', error)
+      return false
     }
   }
 }

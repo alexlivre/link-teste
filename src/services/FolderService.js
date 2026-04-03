@@ -1,7 +1,7 @@
 // src/services/FolderService.js
 // Serviço de pastas seguindo Clean Code (< 80 linhas)
 
-import httpService from './HttpClientService.js';
+import httpService from './HttpClientService.js'
 
 /**
  * Serviço de gestão de pastas
@@ -12,52 +12,52 @@ class FolderService {
    * Cria uma nova pasta
    */
   async createFolder() {
-    const response = await httpService.post('/folder');
+    const response = await httpService.post('/folder')
     
     if (!response.success) {
-      throw new Error(response.message || 'Failed to create folder');
+      throw new Error(response.message || 'Failed to create folder')
     }
 
-    return response.data;
+    return response.data
   }
 
   /**
    * Busca uma pasta pelo hash
    */
   async getFolderByHash(hash) {
-    const response = await httpService.get(`/folder/${hash}`);
+    const response = await httpService.get(`/folder/${hash}`)
     
     if (!response.success) {
-      throw new Error(response.message || 'Failed to get folder');
+      throw new Error(response.message || 'Failed to get folder')
     }
 
-    return response.data;
+    return response.data
   }
 
   /**
    * Lista todas as pastas
    */
   async listFolders() {
-    const response = await httpService.get('/folder');
+    const response = await httpService.get('/folder')
     
     if (!response.success) {
-      throw new Error(response.message || 'Failed to list folders');
+      throw new Error(response.message || 'Failed to list folders')
     }
 
-    return response.data;
+    return response.data
   }
 
   /**
    * Verifica se uma pasta existe
    */
   async folderExists(hash) {
-    const response = await httpService.get(`/folder/${hash}/exists`);
+    const response = await httpService.get(`/folder/${hash}/exists`)
     
     if (!response.success) {
-      throw new Error(response.message || 'Failed to check folder');
+      throw new Error(response.message || 'Failed to check folder')
     }
 
-    return response.data.exists;
+    return response.data.exists
   }
 
   /**
@@ -65,16 +65,16 @@ class FolderService {
    */
   validateHash(hash) {
     if (!hash || hash.trim().length === 0) {
-      return { valid: false, error: 'Hash é obrigatório' };
+      return { valid: false, error: 'Hash é obrigatório' }
     }
 
-    const trimmedHash = hash.trim();
+    const trimmedHash = hash.trim()
     
     if (trimmedHash.length < 16) {
-      return { valid: false, error: 'Hash inválido' };
+      return { valid: false, error: 'Hash inválido' }
     }
 
-    return { valid: true, hash: trimmedHash };
+    return { valid: true, hash: trimmedHash }
   }
 
   /**
@@ -82,9 +82,9 @@ class FolderService {
    */
   saveLastHash(hash) {
     try {
-      localStorage.setItem('inkpage_last_folder_hash', hash);
+      localStorage.setItem('inkpage_last_folder_hash', hash)
     } catch (error) {
-      console.warn('Failed to save hash to localStorage:', error);
+      console.warn('Failed to save hash to localStorage:', error)
     }
   }
 
@@ -93,10 +93,10 @@ class FolderService {
    */
   getLastHash() {
     try {
-      return localStorage.getItem('inkpage_last_folder_hash');
+      return localStorage.getItem('inkpage_last_folder_hash')
     } catch (error) {
-      console.warn('Failed to get hash from localStorage:', error);
-      return null;
+      console.warn('Failed to get hash from localStorage:', error)
+      return null
     }
   }
 
@@ -105,15 +105,15 @@ class FolderService {
    */
   clearLastHash() {
     try {
-      localStorage.removeItem('inkpage_last_folder_hash');
+      localStorage.removeItem('inkpage_last_folder_hash')
     } catch (error) {
-      console.warn('Failed to clear hash from localStorage:', error);
+      console.warn('Failed to clear hash from localStorage:', error)
     }
   }
 }
 
 // Instância singleton
-const folderService = new FolderService();
+const folderService = new FolderService()
 
-export { FolderService, folderService };
-export default folderService;
+export { FolderService, folderService }
+export default folderService

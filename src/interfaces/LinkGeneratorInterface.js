@@ -8,19 +8,18 @@
 export class LinkGeneratorInterface {
   /**
    * Método abstrato para gerar link
-   * @param {Object} params - Parâmetros para geração
+   * @param {Object} _params - Parâmetros para geração
    * @returns {string} - URL gerada
    */
-  generate(params) {
-    throw new Error('Method generate() must be implemented');
+  generate(_params) {
+    throw new Error('Method generate() must be implemented')
   }
   
   /**
    * Método abstrato para validar parâmetros
-   * @param {Object} params - Parâmetros a validar
-   * @returns {boolean} - Válidos ou inválidos
+   * @param {Object} _params - Parâmetros a validar
    */
-  validateParams(params) {
-    throw new Error('Method validateParams() must be implemented');
+  validate(_params) {
+    throw new Error('Method validate() must be implemented')
   }
 }

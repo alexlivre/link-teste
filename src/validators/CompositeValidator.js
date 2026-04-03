@@ -1,7 +1,7 @@
 // validators/CompositeValidator.js
 // Validador composto seguindo SOLID principles
 
-import { ValidatorInterface } from '../interfaces/ValidatorInterface.js';
+import { ValidatorInterface } from '../interfaces/ValidatorInterface.js'
 
 /**
  * Validador composto que pode estender sem modificar
@@ -9,8 +9,8 @@ import { ValidatorInterface } from '../interfaces/ValidatorInterface.js';
  */
 export class CompositeValidator extends ValidatorInterface {
   constructor(validators = []) {
-    super();
-    this.validators = validators;
+    super()
+    this.validators = validators
   }
   
   /**
@@ -19,9 +19,9 @@ export class CompositeValidator extends ValidatorInterface {
    */
   addValidator(validator) {
     if (!(validator instanceof ValidatorInterface)) {
-      throw new Error('Validator must implement ValidatorInterface');
+      throw new Error('Validator must implement ValidatorInterface')
     }
-    this.validators.push(validator);
+    this.validators.push(validator)
   }
   
   /**
@@ -29,9 +29,9 @@ export class CompositeValidator extends ValidatorInterface {
    * @param {ValidatorInterface} validator - Validador a remover
    */
   removeValidator(validator) {
-    const index = this.validators.indexOf(validator);
+    const index = this.validators.indexOf(validator)
     if (index > -1) {
-      this.validators.splice(index, 1);
+      this.validators.splice(index, 1)
     }
   }
   
@@ -41,7 +41,7 @@ export class CompositeValidator extends ValidatorInterface {
    * @returns {boolean} - Válido se todos os validadores aprovarem
    */
   validate(value) {
-    return this.validators.every(validator => validator.validate(value));
+    return this.validators.every(validator => validator.validate(value))
   }
   
   /**
@@ -51,10 +51,10 @@ export class CompositeValidator extends ValidatorInterface {
   getErrorMessage() {
     for (const validator of this.validators) {
       if (!validator.validate(this.lastValue)) {
-        return validator.getErrorMessage();
+        return validator.getErrorMessage()
       }
     }
-    return 'Validation failed';
+    return 'Validation failed'
   }
   
   /**
@@ -63,7 +63,7 @@ export class CompositeValidator extends ValidatorInterface {
    * @returns {boolean} - Válido ou inválido
    */
   validateWithMessage(value) {
-    this.lastValue = value;
-    return this.validate(value);
+    this.lastValue = value
+    return this.validate(value)
   }
 }

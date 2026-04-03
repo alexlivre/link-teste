@@ -1,7 +1,7 @@
 // validators/PhoneValidator.js
 // Validador de telefone brasileiro seguindo SOLID principles
 
-import { ValidatorInterface } from '../interfaces/ValidatorInterface.js';
+import { ValidatorInterface } from '../interfaces/ValidatorInterface.js'
 
 /**
  * Validador específico para telefone brasileiro
@@ -9,10 +9,10 @@ import { ValidatorInterface } from '../interfaces/ValidatorInterface.js';
  */
 export class PhoneValidator extends ValidatorInterface {
   constructor() {
-    super();
+    super()
     // Padrões para celular e fixo brasileiro
-    this.cellphonePattern = /^[1-9]{2}[9][0-9]{8}$/;
-    this.landlinePattern = /^[1-9]{2}[0-9]{8}$/;
+    this.cellphonePattern = /^[1-9]{2}[9][0-9]{8}$/
+    this.landlinePattern = /^[1-9]{2}[0-9]{8}$/
   }
   
   /**
@@ -22,15 +22,15 @@ export class PhoneValidator extends ValidatorInterface {
    */
   validate(phone) {
     if (!phone || typeof phone !== 'string') {
-      return false;
+      return false
     }
     
-    const cleanPhone = this.cleanPhone(phone);
+    const cleanPhone = this.cleanPhone(phone)
     
     return (
       this.cellphonePattern.test(cleanPhone) || 
       this.landlinePattern.test(cleanPhone)
-    );
+    )
   }
   
   /**
@@ -42,7 +42,7 @@ export class PhoneValidator extends ValidatorInterface {
     return phone
       .replace(/\D/g, '')
       .replace(/^55/, '')
-      .slice(0, 11);
+      .slice(0, 11)
   }
   
   /**
@@ -50,6 +50,6 @@ export class PhoneValidator extends ValidatorInterface {
    * @returns {string} - Mensagem de erro
    */
   getErrorMessage() {
-    return 'Formato de telefone inválido. Use (XX) XXXXX-XXXX para celular ou (XX) XXXX-XXXX para fixo.';
+    return 'Formato de telefone inválido. Use (XX) XXXXX-XXXX para celular ou (XX) XXXX-XXXX para fixo.'
   }
 }

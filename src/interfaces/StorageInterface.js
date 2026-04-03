@@ -12,26 +12,26 @@ export class StorageInterface {
    * @param {any} value - Valor a ser salvo
    * @returns {Promise<boolean>} - Sucesso ou falha
    */
-  async save(key, value) {
-    throw new Error('Method save() must be implemented');
+  async set(_key, _value) {
+    throw new Error('Method set() must be implemented')
   }
   
   /**
    * Método abstrato para recuperar dados
-   * @param {string} key - Chave para recuperar
-   * @param {any} defaultValue - Valor padrão se não encontrado
-   * @returns {Promise<any>} - Valor recuperado
+   * @param {string} _key - Chave do item
+   * @param {*} _defaultValue - Valor padrão caso não exista
+   * @returns {*} - Valor encontrado ou padrão
    */
-  async get(key, defaultValue = null) {
-    throw new Error('Method get() must be implemented');
+  async get(_key, _defaultValue = null) {
+    throw new Error('Method get() must be implemented')
   }
   
   /**
    * Método abstrato para remover dados
-   * @param {string} key - Chave para remover
+   * @param {string} _key - Chave para remover
    * @returns {Promise<boolean>} - Sucesso ou falha
    */
-  async remove(key) {
-    throw new Error('Method remove() must be implemented');
+  async remove(_key) {
+    throw new Error('Method remove() must be implemented')
   }
 }

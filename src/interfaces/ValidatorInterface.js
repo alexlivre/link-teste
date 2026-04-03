@@ -7,12 +7,12 @@
  */
 export class ValidatorInterface {
   /**
-   * Método abstrato para validação
-   * @param {any} value - Valor a ser validado
-   * @returns {boolean} - Válido ou inválido
+   * Método abstrato para validar dados
+   * @param {*} _value - Valor a ser validado
+   * @returns {boolean} - Resultado da validação
    */
-  validate(value) {
-    throw new Error('Method validate() must be implemented');
+  validate(_value) {
+    throw new Error('Method validate() must be implemented')
   }
   
   /**
@@ -20,6 +20,6 @@ export class ValidatorInterface {
    * @returns {string} - Mensagem de erro específica
    */
   getErrorMessage() {
-    throw new Error('Method getErrorMessage() must be implemented');
+    throw new Error('Method getErrorMessage() must be implemented')
   }
 }

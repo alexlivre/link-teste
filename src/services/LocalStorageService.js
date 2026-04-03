@@ -1,7 +1,7 @@
 // services/LocalStorageService.js
 // Serviço de armazenamento LocalStorage seguindo SOLID principles
 
-import { StorageInterface } from '../interfaces/StorageInterface.js';
+import { StorageInterface } from '../interfaces/StorageInterface.js'
 
 /**
  * Serviço específico para armazenamento LocalStorage
@@ -9,8 +9,8 @@ import { StorageInterface } from '../interfaces/StorageInterface.js';
  */
 export class LocalStorageService extends StorageInterface {
   constructor() {
-    super();
-    this.isAvailable = this.checkAvailability();
+    super()
+    this.isAvailable = this.checkAvailability()
   }
   
   /**
@@ -19,13 +19,13 @@ export class LocalStorageService extends StorageInterface {
    */
   checkAvailability() {
     try {
-      const testKey = '__localStorage_test__';
-      localStorage.setItem(testKey, 'test');
-      localStorage.removeItem(testKey);
-      return true;
+      const testKey = '__localStorage_test__'
+      localStorage.setItem(testKey, 'test')
+      localStorage.removeItem(testKey)
+      return true
     } catch (error) {
-      console.warn('LocalStorage not available:', error.message);
-      return false;
+      console.warn('LocalStorage not available:', error.message)
+      return false
     }
   }
   
@@ -37,17 +37,17 @@ export class LocalStorageService extends StorageInterface {
    */
   async save(key, value) {
     if (!this.isAvailable) {
-      console.warn('LocalStorage not available, data not saved');
-      return false;
+      console.warn('LocalStorage not available, data not saved')
+      return false
     }
     
     try {
-      const serializedValue = JSON.stringify(value);
-      localStorage.setItem(key, serializedValue);
-      return true;
+      const serializedValue = JSON.stringify(value)
+      localStorage.setItem(key, serializedValue)
+      return true
     } catch (error) {
-      console.error(`Error saving to LocalStorage key "${key}":`, error);
-      return false;
+      console.error(`Error saving to LocalStorage key "${key}":`, error)
+      return false
     }
   }
   
@@ -59,15 +59,15 @@ export class LocalStorageService extends StorageInterface {
    */
   async get(key, defaultValue = null) {
     if (!this.isAvailable) {
-      return defaultValue;
+      return defaultValue
     }
     
     try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue;
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : defaultValue
     } catch (error) {
-      console.error(`Error getting from LocalStorage key "${key}":`, error);
-      return defaultValue;
+      console.error(`Error getting from LocalStorage key "${key}":`, error)
+      return defaultValue
     }
   }
   
@@ -78,15 +78,15 @@ export class LocalStorageService extends StorageInterface {
    */
   async remove(key) {
     if (!this.isAvailable) {
-      return false;
+      return false
     }
     
     try {
-      localStorage.removeItem(key);
-      return true;
+      localStorage.removeItem(key)
+      return true
     } catch (error) {
-      console.error(`Error removing from LocalStorage key "${key}":`, error);
-      return false;
+      console.error(`Error removing from LocalStorage key "${key}":`, error)
+      return false
     }
   }
   
@@ -96,15 +96,15 @@ export class LocalStorageService extends StorageInterface {
    */
   async clear() {
     if (!this.isAvailable) {
-      return false;
+      return false
     }
     
     try {
-      localStorage.clear();
-      return true;
+      localStorage.clear()
+      return true
     } catch (error) {
-      console.error('Error clearing LocalStorage:', error);
-      return false;
+      console.error('Error clearing LocalStorage:', error)
+      return false
     }
   }
   
@@ -114,16 +114,16 @@ export class LocalStorageService extends StorageInterface {
    */
   getKeys() {
     if (!this.isAvailable) {
-      return [];
+      return []
     }
     
-    const keys = [];
+    const keys = []
     for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
+      const key = localStorage.key(i)
       if (key) {
-        keys.push(key);
+        keys.push(key)
       }
     }
-    return keys;
+    return keys
   }
 }

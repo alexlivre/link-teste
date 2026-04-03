@@ -1,9 +1,9 @@
 // backend/config/database.js
 // Configuração do sistema de armazenamento JSON seguindo Clean Code (< 60 linhas)
 
-import fs from 'fs/promises';
-import path from 'path';
-import { logError, logInfo } from '../middleware/logger.js';
+import fs from 'fs/promises'
+import path from 'path'
+import { logError, logInfo } from '../middleware/logger.js'
 
 /**
  * Configuração do sistema de armazenamento JSON
@@ -18,12 +18,12 @@ export const config = {
    */
   async initialize() {
     try {
-      await this.ensureDataDirectory();
-      await this.createDataFiles();
-      logInfo('Database system initialized successfully');
+      await this.ensureDataDirectory()
+      await this.createDataFiles()
+      logInfo('Database system initialized successfully')
     } catch (error) {
-      logError('Failed to initialize database system', error);
-      throw error;
+      logError('Failed to initialize database system', error)
+      throw error
     }
   },
 
@@ -32,10 +32,10 @@ export const config = {
    */
   async ensureDataDirectory() {
     try {
-      await fs.access(this.dataPath);
+      await fs.access(this.dataPath)
     } catch {
-      await fs.mkdir(this.dataPath, { recursive: true });
-      logInfo(`Created data directory: ${this.dataPath}`);
+      await fs.mkdir(this.dataPath, { recursive: true })
+      logInfo(`Created data directory: ${this.dataPath}`)
     }
   },
 
@@ -47,16 +47,16 @@ export const config = {
       { name: 'links.json', content: [] },
       { name: 'folders.json', content: [] },
       { name: 'analytics.json', content: [] }
-    ];
+    ]
 
     for (const file of files) {
-      const filePath = path.join(this.dataPath, file.name);
+      const filePath = path.join(this.dataPath, file.name)
       
       try {
-        await fs.access(filePath);
+        await fs.access(filePath)
       } catch {
-        await fs.writeFile(filePath, JSON.stringify(file.content, null, 2));
-        logInfo(`Created data file: ${file.name}`);
+        await fs.writeFile(filePath, JSON.stringify(file.content, null, 2))
+        logInfo(`Created data file: ${file.name}`)
       }
     }
   },
@@ -65,6 +65,6 @@ export const config = {
    * Obtém o caminho completo de um arquivo de dados
    */
   getDataPath(filename) {
-    return path.join(this.dataPath, filename);
+    return path.join(this.dataPath, filename)
   }
-};
+}

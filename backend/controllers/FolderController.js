@@ -1,9 +1,9 @@
 // backend/controllers/FolderController.js
 // Controller de pastas seguindo Clean Code (< 80 linhas)
 
-import { storageService } from '../services/JsonStorageService.js';
-import { folderService } from '../services/FolderService.js';
-import { NotFoundError, ValidationError } from '../middleware/errorHandler.js';
+import { storageService } from '../services/JsonStorageService.js'
+import { folderService } from '../services/FolderService.js'
+import { NotFoundError, ValidationError } from '../middleware/errorHandler.js'
 
 /**
  * Controller de pastas
@@ -11,8 +11,8 @@ import { NotFoundError, ValidationError } from '../middleware/errorHandler.js';
  */
 class FolderController {
   constructor() {
-    this.storage = storageService;
-    this.folderService = folderService;
+    this.storage = storageService
+    this.folderService = folderService
   }
 
   /**
@@ -20,27 +20,27 @@ class FolderController {
    */
   async getByHash(req, res, next) {
     try {
-      const { hash } = req.params;
+      const { hash } = req.params
 
       if (!hash || hash.length < 16) {
-        throw new ValidationError('Invalid folder hash');
+        throw new ValidationError('Invalid folder hash')
       }
 
       // Buscar pasta
-      const folder = await this.folderService.findByHash(hash);
+      const folder = await this.folderService.findByHash(hash)
 
       if (!folder) {
-        throw new NotFoundError(`Folder with hash "${hash}" not found`);
+        throw new NotFoundError(`Folder with hash "${hash}" not found`)
       }
 
       // Buscar links da pasta
       const links = await this.storage.find(
         'links.json',
         link => link.folder_hash === hash
-      );
+      )
 
       // Atualizar último acesso
-      await this.folderService.updateLastAccessed(hash);
+      await this.folderService.updateLastAccessed(hash)
 
       // Resposta
       res.json({
@@ -59,10 +59,10 @@ class FolderController {
             short_url: `http://localhost:3001/${link.slug}`
           }))
         }
-      });
+      })
 
     } catch (error) {
-      next(error);
+      next(error)
     }
   }
 
@@ -71,7 +71,7 @@ class FolderController {
    */
   async create(req, res, next) {
     try {
-      const folder = await this.folderService.createFolder();
+      const folder = await this.folderService.createFolder()
 
       res.status(201).json({
         success: true,
@@ -80,10 +80,10 @@ class FolderController {
           created_at: folder.created_at,
           message: 'Folder created successfully. Save this hash to access your links later!'
         }
-      });
+      })
 
     } catch (error) {
-      next(error);
+      next(error)
     }
   }
 
@@ -92,7 +92,7 @@ class FolderController {
    */
   async list(req, res, next) {
     try {
-      const folders = await this.folderService.listAll();
+      const folders = await this.folderService.listAll()
       
       // Buscar contagem de links para cada pasta
       const foldersWithCount = await Promise.all(
@@ -100,22 +100,22 @@ class FolderController {
           const links = await this.storage.find(
             'links.json',
             link => link.folder_hash === folder.hash
-          );
+          )
           return {
             ...folder,
             link_count: links.length
-          };
+          }
         })
-      );
+      )
 
       res.json({
         success: true,
         count: foldersWithCount.length,
         data: foldersWithCount
-      });
+      })
 
     } catch (error) {
-      next(error);
+      next(error)
     }
   }
 
@@ -124,22 +124,22 @@ class FolderController {
    */
   async exists(req, res, next) {
     try {
-      const { hash } = req.params;
-      const exists = await this.folderService.exists(hash);
+      const { hash } = req.params
+      const exists = await this.folderService.exists(hash)
 
       res.json({
         success: true,
         data: { exists }
-      });
+      })
 
     } catch (error) {
-      next(error);
+      next(error)
     }
   }
 }
 
 // Instância singleton
-const folderController = new FolderController();
+const folderController = new FolderController()
 
-export { FolderController, folderController };
-export default folderController;
+export { FolderController, folderController }
+export default folderController
