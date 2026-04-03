@@ -1,0 +1,55 @@
+/* assets/styles.css */
+/* Estilos globais seguindo Clean Code */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variáveis CSS customizadas */
+:root {
+  --color-primary: #3b82f6;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+}
+
+/* Classes utilitárias customizadas */
+.btn-primary {
+  @apply bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium;
+}
+
+.btn-success {
+  @apply bg-success-500 text-white px-4 py-2 rounded-lg hover:bg-success-600 transition-colors duration-200 font-medium;
+}
+
+.input-field {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+}
+
+.error-message {
+  @apply text-error-500 text-sm mt-1;
+}
+
+.success-message {
+  @apply text-success-500 text-sm mt-1;
+}
+
+/* Animações sutis */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
